@@ -1,9 +1,11 @@
-package days
+package days.year2016
+
+import days.Day
 
 fun main(args: Array<String>) {
     println(Day1().partOne())
 }
-class Day1:Day(1) {
+class Day1: Day(1, 2016) {
 
     fun partOne(): Any {
         return inputList.forEach {

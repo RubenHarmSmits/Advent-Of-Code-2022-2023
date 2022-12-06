@@ -1,10 +1,12 @@
-package days
+package days.year2016
+
+import days.Day
 
 fun main(args: Array<String>) {
     println(Day7().partOne())
 }
 
-class Day7 : Day(7) {
+class Day7 : Day(7, 2016) {
 
     fun partOne(): Any {
         return inputList.filter { isAbbaLine(it) }.size

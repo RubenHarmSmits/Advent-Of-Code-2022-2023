@@ -1,11 +1,13 @@
-package days
+package days.year2016
+
+import days.Day
 
 fun main(args: Array<String>) {
     println(Day10().solve())
 }
 
 
-class Day10 : Day(10) {
+class Day10 : Day(10, 2016) {
 
     var output = mutableMapOf<Int, Int>()
     var bots = mutableListOf<Bot>()

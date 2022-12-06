@@ -1,22 +1,25 @@
 package days
 
+
 fun main(args: Array<String>) {
-    println(DayX().solve())
+    println(Day1().solve())
 }
 
 
-class DayX:Day(1) {
+class Day1: Day(1) {
 
     fun solve(): Any {
-        return inputList
+        var tot = 0
+        return inputListInt
             .map{it}
-            .forEach{it}
+            .forEachIndexed{i,it->
+
+            }
         return inputString
     }
 
-    private fun dos(a: String, b: Int): String {
-        return "";
-
+    private fun loop(input:Any, total:Any):Any {
+        return ""
     }
 
 }

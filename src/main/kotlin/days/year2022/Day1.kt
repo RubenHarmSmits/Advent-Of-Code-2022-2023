@@ -1,23 +1,22 @@
-package days
+package days.year2022
+
+import days.Day
+
+fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
+
 
 fun main(args: Array<String>) {
-    println(DayX().solve())
+    Day1().solve()
 }
 
-
-class DayX:Day(1) {
-
-    fun solve(): Any {
-        return inputList
-            .map{it}
-            .forEach{it}
-        return inputString
+class Day1 : Day(1) {
+    fun solve() {
+        val calories = inputList
+            .splitBy {  it==""}
+            .map{it.ints().sum()}
+            .sortedDescending()
+        println("Part 1:" + calories[0])
+        println("Part 2:" + calories.take(3).sum())
     }
-
-    private fun dos(a: String, b: Int): String {
-        return "";
-
-    }
-
 }
 

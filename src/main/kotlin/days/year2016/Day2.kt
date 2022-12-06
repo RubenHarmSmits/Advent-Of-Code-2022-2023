@@ -1,5 +1,6 @@
-package days
+package days.year2016
 
+import days.Day
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -7,7 +8,7 @@ fun main(args: Array<String>) {
     println(Day2().solve())
 }
 
-class Day2 : Day(1) {
+class Day2 : Day(1, 2016) {
 
     val input: String = "wtnhxymk"
     var index: Int = 0

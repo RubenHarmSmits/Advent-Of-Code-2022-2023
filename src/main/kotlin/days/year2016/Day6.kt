@@ -1,9 +1,11 @@
-package days
+package days.year2016
+
+import days.Day
 
 fun main(args: Array<String>) {
    println(Day6().solve())
 }
-class Day6:Day(6) {
+class Day6: Day(6, 2016) {
 
     private val answer = ""
 

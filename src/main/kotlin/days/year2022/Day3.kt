@@ -1,25 +1,30 @@
-package days
+package days.year2022
+
+import days.Day
 
 
 fun main(args: Array<String>) {
-    println(Day1().solve())
+    println(Day3().solve())
 }
 
 
-class Day1: Day(1) {
+class Day3 : Day(3) {
 
     fun solve(): Any {
-        var tot = 0
-        return inputListInt
-            .map{it}
-            .forEachIndexed{i,it->
-
+        return inputList.chunked(3).sumOf {
+            var ans = 0
+            it[0].forEach { f ->
+                it[1].forEach { s ->
+                    it[2].forEach { t ->
+                        if (f == s && s == t) {
+                            ans = f.code - if (f.isLowerCase()) 96 else 38
+                        }
+                    }
+                }
             }
+            ans
+        }
         return inputString
-    }
-
-    private fun loop(input:Any, total:Any):Any {
-        return ""
     }
 
 }

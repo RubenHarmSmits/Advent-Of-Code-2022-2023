@@ -1,5 +1,6 @@
 package days
 
+import days.year2016.Day1
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf.instanceOf
