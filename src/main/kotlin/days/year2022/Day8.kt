@@ -12,46 +12,27 @@ class Day8: Day(8) {
 
     fun solve(): Any {
         var highest = 0
-
         val grid = inputList.map { it.split("").filter { it != "" }.ints()}
 
         grid.forEachIndexed { iy, ity ->
-            ity.forEachIndexed { ix, itx ->
-                var score =0;
-
-                val current = itx
-
+            ity.forEachIndexed { ix, it ->
                 // left
-                val ll = ity.subList(0, ix).reversed()
-                val score1 = calcAmountOfTrees(ll, current)
-
+                val l = ity.subList(0, ix).reversed()
                 // right
-                val lr = ity.subList(ix+1, ity.size)
-                val score2= calcAmountOfTrees(lr, current)
-
+                val r = ity.subList(ix+1, ity.size)
                 //top
-                val lt = grid.map{it[ix]}.subList(0, iy).reversed()
-                val score3= calcAmountOfTrees(lt, current)
-
+                val t = grid.map{it[ix]}.subList(0, iy).reversed()
                 //bottom
-                val lb = grid.map{it[ix]}.subList(iy+1, grid.size)
-                val score4= calcAmountOfTrees(lb, current)
+                val b = grid.map{it[ix]}.subList(iy+1, grid.size)
 
-                highest = max(highest, score1 * score2 * score3 * score4)
+                highest = max(highest, views(l, it) * views(r, it) * views(t, it) * views(b, it))
             }
         }
         return highest;
     }
 }
 
-fun calcAmountOfTrees(view:List<Int>, current: Int): Int{
+fun views(view:List<Int>, current: Int): Int{
     var s = view.indexOfFirst {it>=current}
     return if(s>=0) s+1 else view.size
 }
-
-
-
-
-
-
-
