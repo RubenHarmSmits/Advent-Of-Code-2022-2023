@@ -4,7 +4,7 @@ import days.Day
 import java.math.BigInteger
 import java.security.MessageDigest
 
-fun main(args: Array<String>) {
+fun main() {
     println(Day2().solve())
 }
 

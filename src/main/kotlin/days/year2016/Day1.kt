@@ -2,7 +2,7 @@ package days.year2016
 
 import days.Day
 
-fun main(args: Array<String>) {
+fun main() {
     println(Day1().partOne())
 }
 class Day1: Day(1, 2016) {

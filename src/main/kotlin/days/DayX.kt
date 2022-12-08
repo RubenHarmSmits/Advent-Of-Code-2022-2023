@@ -1,7 +1,7 @@
 package days
 
 
-fun main(args: Array<String>) {
+fun main() {
     println(Day1().solve())
 }
 

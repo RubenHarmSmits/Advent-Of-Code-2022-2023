@@ -5,7 +5,7 @@ import days.Day
 fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
 
 
-fun main(args: Array<String>) {
+fun main() {
     Day1().solve()
 }
 
