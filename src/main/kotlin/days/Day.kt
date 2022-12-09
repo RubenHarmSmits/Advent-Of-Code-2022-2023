@@ -92,10 +92,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     data class Point(var x: Int, var y: Int)
 
     fun Point.moveInDirection(direction: Char, step: Int = 1): Point = when (direction) {
-        'N' -> Point(this.x, this.y - step)
-        'S' -> Point(this.x, this.y + step)
-        'W' -> Point(this.x - step, this.y)
-        'E' -> Point(this.x + step, this.y)
+        'D' -> Point(this.x, this.y - step)
+        'U' -> Point(this.x, this.y + step)
+        'L' -> Point(this.x - step, this.y)
+        'R' -> Point(this.x + step, this.y)
         else -> throw IllegalArgumentException("$direction is not a valid direction")
     }
 
