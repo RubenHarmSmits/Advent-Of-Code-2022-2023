@@ -7,6 +7,8 @@ import util.InputReader
 typealias Matrix<T> = List<List<T>>
 typealias MutableMatrix<T> = MutableList<MutableList<T>>
 
+
+
 abstract class Day(dayNumber: Int, year:Int=2022) {
 
     fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
@@ -40,6 +42,20 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
     protected val inputString: String by lazy { InputReader.getInputAsString(dayNumber, year) }
 
+    fun sign(num: Int): Int = if (num >0) 1 else -1
+    fun sign(positive: Boolean) = if (positive) 1 else -1
+
+    data class Point(var x: Int, var y: Int) {
+        fun move(direction: Char) {
+            when (direction) {
+                'D' -> this.y--
+                'U' -> this.y++
+                'L' -> this.x--
+                'R' -> this.x++
+                else -> throw IllegalArgumentException("$direction is not a valid direction")
+            }
+        }
+    }
 
 
     fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) { i -> rows[i] }
@@ -73,8 +89,11 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> Matrix<T>.getAdjacentCoordinates(point: Point): List<Point> = getAdjacentCoordinates(point.y, point.x)
     fun <T> Matrix<T>.getRangesToEdge(point: Point) = getRangesToEdge(point.y, point.x)
     fun <T> Matrix<T>.getRangesToEdge(row: Int, col: Int) = getColumnToEdge(row, col) + getRowToEdge(row, col)
-    fun <T> Matrix<T>.getColumnToEdge(row: Int, col: Int): List<List<T>> = this.getColumn(col).let { listOf(it.subList(0, row), it.subList(row + 1, it.size)) }
-    fun <T> Matrix<T>.getRowToEdge(row: Int, col: Int): List<List<T>> = this[row].let { listOf(it.subList(0, col), it.subList(col + 1, it.size)) }
+    fun <T> Matrix<T>.getColumnToEdge(row: Int, col: Int): List<List<T>> =
+        this.getColumn(col).let { listOf(it.subList(0, row), it.subList(row + 1, it.size)) }
+
+    fun <T> Matrix<T>.getRowToEdge(row: Int, col: Int): List<List<T>> =
+        this[row].let { listOf(it.subList(0, col), it.subList(col + 1, it.size)) }
 
 
     fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
@@ -89,7 +108,15 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> Matrix<T>.getSurroundingCoordinates(point: Point): List<Point> =
         this.getSurroundingCoordinates(point.y, point.x)
 
-    data class Point(var x: Int, var y: Int)
+    fun <T> Matrix<T>.print()   {
+        for (row in this) {
+            for (element in row) {
+                print(element)
+            }
+            println() // Move to the next line after printing each row
+        }
+    }
+
 
     fun Point.moveInDirection(direction: Char, step: Int = 1): Point = when (direction) {
         'D' -> Point(this.x, this.y - step)
@@ -174,7 +201,9 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     }
     /*----- Helper Functions -----*/
 
-    private fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> = List(matrix.getColNum()) { i -> matrix.getColumn(i) }
+    private fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> =
+        List(matrix.getColNum()) { i -> matrix.getColumn(i) }
+
     private fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
         var newMatrix = matrix
         repeat(times) {
