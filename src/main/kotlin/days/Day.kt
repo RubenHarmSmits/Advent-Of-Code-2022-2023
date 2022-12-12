@@ -45,11 +45,11 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun sign(num: Int): Int = if (num >0) 1 else -1
     fun sign(positive: Boolean) = if (positive) 1 else -1
 
-    data class Point(var x: Int, var y: Int) {
+    data class Point(var y: Int, var x: Int) {
         fun move(direction: Char) {
             when (direction) {
-                'D' -> this.y--
-                'U' -> this.y++
+                'D' -> this.y++
+                'U' -> this.y--
                 'L' -> this.x--
                 'R' -> this.x++
                 else -> throw IllegalArgumentException("$direction is not a valid direction")
@@ -79,10 +79,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
     fun <T> Matrix<T>.getAdjacentCoordinates(row: Int, col: Int): List<Point> {
         val adjacent = mutableListOf<Point>()
-        if (col != 0) adjacent.add(Point(col - 1, row))
-        if (col != this.getColNum() - 1) adjacent.add(Point(col + 1, row))
-        if (row != 0) adjacent.add(Point(col, row - 1))
-        if (row != this.getRowNum() - 1) adjacent.add(Point(col, row + 1))
+        if (col != 0) adjacent.add(Point( row,col - 1))
+        if (col != this.getColNum() - 1) adjacent.add(Point(row,col + 1))
+        if (row != 0) adjacent.add(Point(row - 1,col ))
+        if (row != this.getRowNum() - 1) adjacent.add(Point(row + 1,col))
         return adjacent
     }
 
@@ -108,13 +108,57 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> Matrix<T>.getSurroundingCoordinates(point: Point): List<Point> =
         this.getSurroundingCoordinates(point.y, point.x)
 
+    fun <T> Matrix<T>.bfs(start: Point, end: Point): List<Point> {
+        val queue = LinkedList<Point>()
+        val visited = mutableSetOf<Point>()
+        val path = mutableMapOf<Point, Point>()
+
+        queue.add(start)
+        visited.add(start)
+
+        while (queue.isNotEmpty()) {
+            val current = queue.removeFirst()
+
+            if (current == end) {
+                // path found, reconstruct it using the path map
+                val shortestPath = mutableListOf<Point>()
+                var cur = end
+                while (cur != start) {
+                    shortestPath.add(cur)
+                    cur = path[cur]!!
+                }
+                shortestPath.add(start)
+                return shortestPath.reversed()
+            }
+
+            val neighbors = this.getAdjacentCoordinates(current).filter{this.get(it)-this.get(current)<2}
+
+            for (neighbor in neighbors) {
+                if (neighbor !in visited) {
+                    queue.add(neighbor)
+                    visited.add(neighbor)
+                    path[neighbor] = current
+                }
+            }
+        }
+
+
+        // no path found
+        return List(5000){start}
+    }
+
     fun <T> Matrix<T>.print()   {
         for (row in this) {
             for (element in row) {
                 print(element)
+                print(" ")
             }
             println() // Move to the next line after printing each row
         }
+    }
+
+    fun <T> Matrix<T>.get(point:Point): Int {
+        return this[point.y][point.x] as Int
     }
 
 
@@ -154,16 +198,6 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         }
         return binary
     }
-//fun <T> permutations(list: List<T>): List<Pair<T,T>> {
-//    val permutations = mutableListOf<Pair<T,T>>()
-//    for((i,element) in list.withIndex()){
-//        for((j,ele) in list.withIndex()){
-//            if(i != j)
-//                permutations.add(Pair(element, ele))
-//        }
-//    }
-//    return permutations.toList()
-//}
 
     fun <E> permutations(list: List<E>, length: Int? = null): Sequence<List<E>> = sequence {
         val n = list.size
