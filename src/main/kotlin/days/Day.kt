@@ -3,6 +3,7 @@ package days
 import java.lang.IllegalArgumentException
 import java.util.*
 import util.InputReader
+import kotlin.math.abs
 
 typealias Matrix<T> = List<List<T>>
 typealias MutableMatrix<T> = MutableList<MutableList<T>>
@@ -45,6 +46,18 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun sign(num: Int): Int = if (num >0) 1 else -1
     fun sign(positive: Boolean) = if (positive) 1 else -1
 
+    data class PointL(var y: Long, var x: Long)
+
+    data class Range(val begin: Int, val end: Int)
+
+    fun extraxtAllIntsFromString(string:String): List<Int> {
+        val regex = Regex("\\d+")
+        val resultList = regex.findAll(string).map { it.value }.toList().ints()
+        return resultList
+    }
+
+
+
     data class Point(var y: Int, var x: Int) {
         fun move(direction: Char) {
             when (direction) {
@@ -56,6 +69,15 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
             }
         }
     }
+
+    fun manhattanDistance(p1: Point, p2: Point): Int {
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y)
+    }
+
+    fun manhattanDistance(p1: PointL, p2: PointL): Long {
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y)
+    }
+
 
 
     fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) { i -> rows[i] }

@@ -84,19 +84,11 @@ class Day13 : Day(13) {
                 return emptyList()
             }
             if (token == ']') {
-                if (level == 0) {
-                    throw Exception("missing opening paren")
-                } else {
-                    return emptyList()
-                }
+                return emptyList()
             } else if (token == '[') {
-                val ret =
-                    listOf(fooHelper(level + 1)) + fooHelper(level)
-                return ret
-
+                return listOf(fooHelper(level + 1)) + fooHelper(level)
             } else {
-                val ret = listOf(token) + fooHelper(level)
-                return ret
+                return listOf(token) + fooHelper(level)
             }
         }
 
