@@ -2,7 +2,6 @@ package days.year2022
 
 import days.Day
 import java.lang.Math.abs
-import kotlin.collections.*
 
 
 fun main() {
@@ -16,10 +15,10 @@ fun main() {
 class Day15 : Day(15) {
 
     fun solve(): Any {
-        var MAX = 4000000
-        var grid = MutableList(MAX + 1) { mutableListOf<Range>() }
+        val MAX = 4000000
+        val grid = MutableList(MAX + 1) { mutableListOf<Range>() }
         inputList
-            .forEachIndexed { i, it ->
+            .forEach {
                 val (sx, sy, bx, by) = extraxtAllIntsFromString(it)
                 val sp = Point(sy, sx)
                 val mh = manhattanDistance(sp, Point(by, bx))
