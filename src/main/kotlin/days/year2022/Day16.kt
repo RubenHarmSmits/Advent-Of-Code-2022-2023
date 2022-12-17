@@ -21,11 +21,8 @@ data class Valve(val name: String, val rate: Int, var tunnels: List<Any>) {
 class Day16 : Day(16) {
 
     var valves = mutableListOf<Valve>()
-
     val MAXMINUTES = 26
-
     var highestScore = 0;
-
     var maxOpened = 0;
     var maxFlow = 0;
 
@@ -39,10 +36,9 @@ class Day16 : Day(16) {
                 val tunnels = it.substringAfter("valves ").split(", ")
                 valves.add(Valve(valve, rate, tunnels))
             }
+
         for (valve in valves) {
-            valve.tunnels = valve.tunnels.map { name ->
-                findValve(name)
-            }
+            valve.tunnels = valve.tunnels.map { findValve(it) }
         }
 
         maxOpened = valves.filter { it.rate > 0 }.size
@@ -67,8 +63,6 @@ class Day16 : Day(16) {
         previousValve: Valve,
         previousElefant: Valve
     ) {
-
-
         var nScore = score + flowing
 
         val maxPossibleScore = nScore + (MAXMINUTES - step) * maxFlow
@@ -93,7 +87,7 @@ class Day16 : Day(16) {
                                 step + 1,
                                 flowing,
                                 nScore,
-                                opened.toMutableList(),
+                                opened,
                                 true,
                                 true,
                                 currentValve,
@@ -111,7 +105,7 @@ class Day16 : Day(16) {
                             step + 1,
                             flowing + currentElefant.rate,
                             nScore,
-                            nopened.toMutableList(),
+                            nopened,
                             true,
                             false,
                             currentValve,
@@ -132,7 +126,7 @@ class Day16 : Day(16) {
                             step + 1,
                             flowing + currentValve.rate,
                             nScore,
-                            nopened.toMutableList(),
+                            nopened,
                             false,
                             true,
                             currentValve,
@@ -149,7 +143,7 @@ class Day16 : Day(16) {
                         step + 1,
                         flowing + currentElefant.rate + currentValve.rate,
                         nScore,
-                        nopened.toMutableList(),
+                        nopened,
                         false,
                         false,
                         currentValve,

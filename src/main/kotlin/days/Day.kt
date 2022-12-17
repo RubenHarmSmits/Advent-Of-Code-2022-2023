@@ -177,6 +177,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
             }
             println() // Move to the next line after printing each row
         }
+        println()
     }
 
     fun <T> Matrix<T>.get(point:Point): Int {
