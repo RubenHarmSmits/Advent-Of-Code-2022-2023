@@ -74,6 +74,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         return abs(p1.x - p2.x) + abs(p1.y - p2.y)
     }
 
+    fun manhattanDistance3(p1: List<Int>, p2: List<Int>, p3: List<Int>): Int {
+        return abs(p1[0] - p2[1]) + abs(p1[0] - p2[1]) + abs(p1[0] - p2[1])
+    }
+
     fun manhattanDistance(p1: PointL, p2: PointL): Long {
         return abs(p1.x - p2.x) + abs(p1.y - p2.y)
     }
@@ -194,7 +198,8 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     }
 
 
-    data class Point3(val x: Int, val y: Int, val z: Int)
+    data class Point3(val y: Int, val x: Int, val z: Int)
+    data class Cube(val y: Int, val x: Int, val z: Int)
 
     fun String.hexToBinaryString(): String {
         val num = this.uppercase(Locale.getDefault())
@@ -282,6 +287,21 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         first in other || last in other || other.first in this || other.last in this
 
     infix fun IntRange.containsRange(other: IntRange): Boolean = other.first in this && other.last in this
+
+    fun <T> List<T>.combinations(size: Int): List<List<T>> {
+        if (size == 0) return listOf(emptyList())
+        if (size > this.size) return emptyList()
+        if (size == this.size) return listOf(this)
+
+        val result = mutableListOf<List<T>>()
+        for (i in this.indices) {
+            val head = this[i]
+            val tail = this.drop(i + 1)
+            result.addAll(tail.combinations(size - 1).map { it + head })
+        }
+        return result
+    }
+
 
 
 

@@ -17,7 +17,7 @@ fun main() {
 
 class Day17 : Day(17) {
 
-    val GRIDHEIGHT = 50000
+    val GRIDHEIGHT = 20
     var grid = MutableList(GRIDHEIGHT) { MutableList(7) { '.' } }
     var rock0 = listOf(Point(0, 0), Point(0, 1), Point(0, 2), Point(0, 3))
     var rock1 = listOf(Point(-1, 0), Point(-1, 1), Point(-1, 2), Point(0, 1), Point(-2, 1))
@@ -35,7 +35,8 @@ class Day17 : Day(17) {
 
     fun solve1(): Any {
 
-        repeat(20000) {
+        repeat(20) {
+            grid.print()
 
             grid[grid.lastIndex] = MutableList(7) { '#' }
             val highestY = grid.indexOfFirst { it.contains('#') }
@@ -62,20 +63,11 @@ class Day17 : Day(17) {
             }
 
 
+                // show diff of height after every round of stones to try to find a repeating pattern
             if ((it+1) % 5 == 0) {
                 val diff = GRIDHEIGHT - grid.indexOfFirst { it.contains('#') } - 1 - previous
                 previous = GRIDHEIGHT - grid.indexOfFirst { it.contains('#') } - 1
                 print(diff)
-
-                // 1000000000000
-
-                // eerste 20 stenen 26 bij
-
-                //elke 35 stenen komt er 53 bij
-
-                // (28571428570 * 53) + 26 + 47
-
-                // er blijft 30 over = 47 hoogte
                 print(',')
             }
 
@@ -164,9 +156,9 @@ class Day17 : Day(17) {
 
 
 
-        val answer = amountOfTimesRepeating * totalHeightInRepeatingString + totalHeightInBeforeString + totalHeightInAfterString
+        val answer2 = amountOfTimesRepeating * totalHeightInRepeatingString + totalHeightInBeforeString + totalHeightInAfterString
 
-        return answer
+        return answer2
     }
 
 }
