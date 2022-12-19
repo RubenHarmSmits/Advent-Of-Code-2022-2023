@@ -12,7 +12,9 @@ typealias MutableMatrix<T> = MutableList<MutableList<T>>
 
 abstract class Day(dayNumber: Int, year:Int=2022) {
 
+
     fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
+    fun List<Int>.product() = this.reduce { acc, i ->  acc * i }
 
     fun <E> List<E>.splitBy(predicate: (E) -> Boolean): List<List<E>> =
         this.fold(mutableListOf(mutableListOf<E>())) { acc, element ->
@@ -301,6 +303,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         }
         return result
     }
+
+    operator fun <T> List<T>.component6(): T = get(5)
+    operator fun <T> List<T>.component7(): T = get(6)
+
 
 
 

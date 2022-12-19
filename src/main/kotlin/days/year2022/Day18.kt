@@ -47,26 +47,25 @@ class Day18 : Day(18) {
         val notEscaping = mutableListOf<List<Int>>()
 
         for (y in 0 until GRIDSIZE) {
-]            for (x in 0 until GRIDSIZE) {
+            for (x in 0 until GRIDSIZE) {
                 for (z in 0 until GRIDSIZE) {
                     if (!grid[y][x][z] && !canEscape(grid.toList(), Cube(y, x, z))) {
-                        notEscaping.add(listOf(y,x,z))
+                        notEscaping.add(listOf(y, x, z))
                     }
                 }
             }
         }
 
 
-        notEscaping.forEach{
-            val (y,x,z) = it
+        notEscaping.forEach {
+            val (y, x, z) = it
             for (i in 0 until 6) {
-                if(grid[y+dy[i]][x+dx[i]][z+dz[i]]) tot--
+                if (grid[y + dy[i]][x + dx[i]][z + dz[i]]) tot--
             }
         }
 
         return tot
     }
-
 
     private fun part1(): Int {
         val adj = cubes.combinations(2).filter { it[0] != it[1] && adjacent(it[0], it[1]) }.size
@@ -91,12 +90,8 @@ class Day18 : Day(18) {
 
         while (queue.isNotEmpty()) {
             val current = queue.removeFirst()
-            if(escaping.contains(current)){
-                return true
-            }
-            if(noEscaping.contains(current)){
-                return false
-            }
+            if (escaping.contains(current)) return true
+            if (noEscaping.contains(current)) return false
             visited.add(current)
 
             for (i in 0 until 6) {
@@ -104,36 +99,18 @@ class Day18 : Day(18) {
                 val nextY = current.y + dy[i]
                 val nextZ = current.z + dz[i]
 
-                if (nextX < 0 || nextX >= GRIDSIZE ||
-                    nextY < 0 || nextY >= GRIDSIZE ||
-                    nextZ < 0 || nextZ >= GRIDSIZE ||
-                    visited.contains(Cube(nextY, nextX, nextZ)) ||
-                    grid[nextY][nextX][nextZ]
-                ) {
-                    continue
-                }
+                if (nextX < 0 || nextX >= GRIDSIZE || nextY < 0 || nextY >= GRIDSIZE || nextZ < 0 || nextZ >= GRIDSIZE || visited.contains(Cube(nextY, nextX, nextZ)) || grid[nextY][nextX][nextZ]) continue
 
                 queue.add(Cube(nextY, nextX, nextZ))
 
-                if (nextX == 0 || nextX == GRIDSIZE - 1 ||
-                    nextY == 0 || nextY == GRIDSIZE - 1 ||
-                    nextZ == 0 || nextZ == GRIDSIZE - 1
-                ) {
-                    escaping+= visited
+                if (nextX == 0 || nextX == GRIDSIZE - 1 || nextY == 0 || nextY == GRIDSIZE - 1 || nextZ == 0 || nextZ == GRIDSIZE - 1) {
+                    escaping += visited
                     return true
                 }
             }
         }
-        noEscaping+=visited
+        noEscaping += visited
         return false
     }
 
-
 }
-
-
-// 2003 too low
-
-
-
-
