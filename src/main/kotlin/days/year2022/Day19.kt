@@ -14,7 +14,9 @@ class Day19 : Day(19) {
 
     fun solve(): Any {
         return inputList
-            .map { extraxtAllIntsFromString(it) }.map { getHighestGeode(it) }.product()
+            .map { extraxtAllIntsFromString(it) }
+            .map { getHighestGeode(it) }
+            .product()
 
     }
 
