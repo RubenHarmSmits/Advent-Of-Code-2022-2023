@@ -19,10 +19,7 @@ data class Monk(
 
 class Day21 : Day(21) {
 
-
     var mobkeys = mutableListOf<Monk>()
-
-
     fun solve(): Any {
         inputList
             .forEach {

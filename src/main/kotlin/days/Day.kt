@@ -126,10 +126,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
     fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
         val adjacent = getAdjacentCoordinates(row, col).toMutableList()
-        if (col != 0 && row != 0) adjacent.add(Point(col - 1, row - 1))
-        if (col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(col - 1, row + 1))
-        if (col != this.getColNum() - 1 && row != 0) adjacent.add(Point(col + 1, row - 1))
-        if (col != this.getColNum() - 1 && row != this.getRowNum() - 1) adjacent.add(Point(col + 1, row + 1))
+        if (col != 0 && row != 0) adjacent.add(Point(row - 1, col - 1))
+        if (col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(row + 1,col - 1, ))
+        if (col != this.getColNum() - 1 && row != 0) adjacent.add(Point(row - 1,col + 1))
+        if (col != this.getColNum() - 1 && row != this.getRowNum() - 1) adjacent.add(Point(row + 1, col + 1))
         return adjacent
     }
 
@@ -180,6 +180,17 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
             for (element in row) {
                 print(element)
                 print(" ")
+            }
+            println() // Move to the next line after printing each row
+        }
+        println()
+    }
+
+    fun <T> Matrix<T>.print(p: Point, dir: String)   {
+        for ((y,row) in this.withIndex()) {
+            for ((x,element) in row.withIndex()) {
+                if(y==p.y && x==p.x) print(dir)
+                else print(element)
             }
             println() // Move to the next line after printing each row
         }
@@ -265,7 +276,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     }
     /*----- Helper Functions -----*/
 
-    private fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> =
+    fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> =
         List(matrix.getColNum()) { i -> matrix.getColumn(i) }
 
     private fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
