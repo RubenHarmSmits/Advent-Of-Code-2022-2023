@@ -63,10 +63,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     data class Point(var y: Int, var x: Int) {
         fun move(direction: Char) {
             when (direction) {
-                'D' -> this.y++
-                'U' -> this.y--
-                'L' -> this.x--
-                'R' -> this.x++
+                'D','v' -> this.y++
+                'U','^' -> this.y--
+                'L', '<' -> this.x--
+                'R', '>' -> this.x++
                 else -> throw IllegalArgumentException("$direction is not a valid direction")
             }
         }
@@ -186,7 +186,21 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         println()
     }
 
-    fun <T> Matrix<T>.print(p: Point, dir: String)   {
+    fun reverseColumns(matrix: MutableList<MutableList<Char>>): MutableList<MutableList<Char>> {
+        val SIZE = matrix.size
+
+
+        for( x in 0 until SIZE){
+            val temp = matrix.map{it[x]}.reversed()
+            for( y in 0 until SIZE){
+                matrix[y][x] = temp[y]
+            }
+        }
+
+        return matrix
+    }
+
+    fun <T> Matrix<T>.print(p: Point, dir: Char)   {
         for ((y,row) in this.withIndex()) {
             for ((x,element) in row.withIndex()) {
                 if(y==p.y && x==p.x) print(dir)
@@ -279,7 +293,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> =
         List(matrix.getColNum()) { i -> matrix.getColumn(i) }
 
-    private fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
+    fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
         var newMatrix = matrix
         repeat(times) {
             newMatrix = transposeMatrix(newMatrix)
