@@ -93,8 +93,8 @@ class Day24 : Day(24) {
         }
     }
 
-    private fun makeBlizzardsMove(blizzards: MutableList<Pair<Day.Point, Char>>): MutableList<Pair<Day.Point, Char>> {
-        var nBlizzards = mutableListOf<Pair<Day.Point, Char>>()
+    private fun makeBlizzardsMove(blizzards: MutableList<Pair<Point, Char>>): MutableList<Pair<Point, Char>> {
+        var nBlizzards = mutableListOf<Pair<Point, Char>>()
         for (blizz in blizzards.toMutableList()) {
             var bliz = blizz.copy()
             var (poss, dir) = bliz

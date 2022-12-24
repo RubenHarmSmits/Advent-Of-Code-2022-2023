@@ -58,6 +58,8 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         return resultList
     }
 
+    fun isNumeric(str: String) = str.all { it in '0'..'9' }
+
 
 
     data class Point(var y: Int, var x: Int) {
