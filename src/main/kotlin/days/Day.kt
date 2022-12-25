@@ -16,6 +16,9 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
     fun List<Int>.product() = this.reduce { acc, i ->  acc * i }
 
+    fun List<Long>.closestValue(value: Long) = minBy { abs(value - it) }
+
+
     fun <E> List<E>.splitBy(predicate: (E) -> Boolean): List<List<E>> =
         this.fold(mutableListOf(mutableListOf<E>())) { acc, element ->
             if (predicate.invoke(element)) {
