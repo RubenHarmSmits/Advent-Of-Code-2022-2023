@@ -3,6 +3,8 @@ package days
 import java.lang.IllegalArgumentException
 import java.util.*
 import util.InputReader
+import java.math.BigInteger
+import java.security.MessageDigest
 import kotlin.math.abs
 
 typealias Matrix<T> = List<List<T>>
@@ -61,17 +63,19 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         return resultList
     }
 
-    fun isNumeric(str: String) = str.all { it in '0'..'9' }
+    fun isNumeric(str: String) = (str != "") && str.all { it in '0'..'9' }
 
-
+    enum class Direction {
+        UP, DOWN, RIGHT, LEFT
+    }
 
     data class Point(var y: Int, var x: Int) {
-        fun move(direction: Char) {
+        fun move(direction: Any) {
             when (direction) {
-                'D','v' -> this.y++
-                'U','^' -> this.y--
-                'L', '<' -> this.x--
-                'R', '>' -> this.x++
+                'D','v', Direction.DOWN -> this.y++
+                'U','^', Direction.UP -> this.y--
+                'L', '<', Direction.LEFT -> this.x--
+                'R', '>', Direction.RIGHT -> this.x++
                 else -> throw IllegalArgumentException("$direction is not a valid direction")
             }
         }
@@ -313,6 +317,11 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
             column.add(array[it][col])
         }
         return column
+    }
+
+    fun md5(input: String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
     infix fun IntRange.overlaps(other: IntRange): Boolean =

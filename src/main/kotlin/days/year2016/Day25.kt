@@ -4,9 +4,9 @@ import days.Day
 import kotlin.math.*
 
 fun main() {
-    println(Day1().solve())
+    println(Day25().solve())
 }
-class DayX: Day(1, 2023) {
+class Day25: Day(25, 2016) {
     var tot = 0
 
     var input = "";
