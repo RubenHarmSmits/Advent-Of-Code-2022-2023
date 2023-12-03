@@ -96,6 +96,9 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
 
     fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) { i -> rows[i] }
+    fun matrixOfInput(inputList:List<String>): Matrix<Char> {
+        return matrixOf(inputList.map { it.map { it } })
+    }
     fun <T> matrixOf(rows: List<List<T>>): Matrix<T> = List(rows.size) { i -> rows[i] }
     fun <T> Matrix<T>.toMutableMatrix(): MutableMatrix<T> = this.map { it.toMutableList() }.toMutableList()
     fun <T> Matrix<T>.getColumn(col: Int): List<T> = getCol(this, col)
@@ -168,7 +171,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
                 return shortestPath.reversed()
             }
 
-            val neighbors = this.getAdjacentCoordinates(current).filter{this.get(it)-this.get(current)<2}
+            val neighbors = this.getAdjacentCoordinates(current).filter{this.getInt(it)-this.getInt(current)<2}
 
             for (neighbor in neighbors) {
                 if (neighbor !in visited) {
@@ -220,9 +223,13 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         println()
     }
 
-    fun <T> Matrix<T>.get(point:Point): Int {
+    fun <T> Matrix<T>.get(point:Point): T {
+        return this[point.y][point.x]
+    }
+    fun <T> Matrix<T>.getInt(point:Point): Int {
         return this[point.y][point.x] as Int
     }
+
 
 
     fun Point.moveInDirection(direction: Char, step: Int = 1): Point = when (direction) {
