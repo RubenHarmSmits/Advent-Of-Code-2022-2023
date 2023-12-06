@@ -4,18 +4,17 @@ import days.Day
 
 var games = listOf(Game(49, 298), Game(78, 1185), Game(79, 1066), Game(80, 1181))
 var game = Game(49787980L, 298118510661181L)
+
 fun main() {
     println("PART1: " + Day6().solve())
     println("PART2: " + Day6().numberOfWaysToBeat(game))
 }
 
 class Day6 : Day(6, 2023) {
-    fun solve(): Any {
+    fun solve(): Long {
         return games
                 .map { numberOfWaysToBeat(it) }
-                .fold(1L) { acc, it ->
-                    acc * it
-                }
+                .reduce{ acc, nums -> acc * nums }
     }
 
     fun numberOfWaysToBeat(game: Game): Long {
@@ -24,4 +23,5 @@ class Day6 : Day(6, 2023) {
                 .toLong()
     }
 }
+
 data class Game(val time: Long, val record: Long)
