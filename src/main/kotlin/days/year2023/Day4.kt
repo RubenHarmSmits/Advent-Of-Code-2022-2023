@@ -10,7 +10,9 @@ class Day4 : Day(4, 2023) {
 
     fun solve(): Any {
         val cards = inputList.map {
-            val (winning, mine) = it.substringAfter(':').split("|").map { extraxtAllIntsFromString(it) };
+            val (winning, mine) = it.substringAfter(':')
+                    .split("|")
+                    .map { extraxtAllIntsFromString(it) };
             val inter = winning.intersect(mine).size
             Card(inter, 1)
         }

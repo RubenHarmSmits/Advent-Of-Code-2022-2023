@@ -62,6 +62,11 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         val resultList = regex.findAll(string).map { it.value }.toList().ints()
         return resultList
     }
+    fun extraxtAllLongsFromString(string:String): List<Long> {
+        val regex = Regex("\\d+")
+        val resultList = regex.findAll(string).map { it.value }.toList().map{it.toLong()}
+        return resultList
+    }
 
     fun isNumeric(str: String) = (str != "") && str.all { it in '0'..'9' }
 

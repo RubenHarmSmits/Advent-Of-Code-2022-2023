@@ -13,7 +13,6 @@ class Day2 : Day(2, 2023) {
 
 
     fun solve(): Any {
-        println(a.first)
         return inputList.map {
             var numbers = it.split(": ")[1];
             var games = numbers.split("; ")
