@@ -355,6 +355,21 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         return result
     }
 
+    // find lcm of a list of longs
+    fun leastCommonMultiple(numbers: List<Long>): Long {
+        var result = numbers[0]
+        for (i in 1 until numbers.size) {
+            result = leastCommonMultiple(result, numbers[i])
+        }
+        return result
+    }
+
+    // find the gcd of 2 long's
+    fun greatestCommonDevisor(a: Long, b: Long): Long = if (b == 0L) a else greatestCommonDevisor(b, a % b)
+
+    // Function to calculate the least common multiple (LCM) of 2 longs
+    fun leastCommonMultiple(a: Long, b: Long): Long = abs(a * b) / greatestCommonDevisor(a, b)
+
     operator fun <T> List<T>.component6(): T = get(5)
     operator fun <T> List<T>.component7(): T = get(6)
 
