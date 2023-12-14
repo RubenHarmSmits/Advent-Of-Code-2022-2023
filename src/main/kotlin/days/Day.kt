@@ -216,6 +216,26 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
         return matrix
     }
+    fun rotateMatrixCLockwise(matrix: Matrix<Char>, amount: Int): Matrix<Char> {
+
+        var rotatedMatrix: MutableMatrix<Char> = matrix.toMutableMatrix();
+        repeat(amount){
+            val rows = rotatedMatrix.size
+            val cols = rotatedMatrix[0].size
+
+            // Create a new matrix with swapped rows and columns
+            val newRotatedMatrix = MutableList(cols) { MutableList(rows) { ' ' } }
+
+            for (i in 0 until rows) {
+                for (j in 0 until cols) {
+                    newRotatedMatrix[j][rows - 1 - i] = rotatedMatrix[i][j]
+                }
+            }
+            rotatedMatrix = newRotatedMatrix
+        }
+
+        return rotatedMatrix
+    }
 
     fun <T> Matrix<T>.print(p: Point, dir: Char)   {
         for ((y,row) in this.withIndex()) {
