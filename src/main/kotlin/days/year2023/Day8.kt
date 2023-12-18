@@ -37,4 +37,4 @@ class Day8 : Day(8, 2023) {
     }
 }
 
-    data class Node(val name: String, val left: String, val right: String)
+    private data class Node(val name: String, val left: String, val right: String)

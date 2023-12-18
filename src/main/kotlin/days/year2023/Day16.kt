@@ -27,13 +27,13 @@ class Day16 : Day(16, 2023) {
 
 
     private fun solveFromStart(direction: Direction, point: Point): Int {
-        val energized: MutableList<Point> = mutableListOf()
+        val energized = mutableSetOf<Point>()
         light(direction, point, mutableListOf(), energized)
-        return energized.toSet().size;
+        return energized.size;
     }
 
 
-    private fun light(direction: Direction, point: Point, mem: MutableList<Pair<Point, Direction>>, energized: MutableList<Point>) {
+    private fun light(direction: Direction, point: Point, mem: MutableList<Pair<Point, Direction>>, energized: MutableSet<Point>) {
         point.move(direction)
 
         val newMem = Pair(point, direction)
