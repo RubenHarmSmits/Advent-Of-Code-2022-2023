@@ -394,6 +394,67 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     operator fun <T> List<T>.component7(): T = get(6)
 
 
+    fun intersectRanges(range1: LongRange, range2: LongRange): LongRange? {
+        val start = maxOf(range1.start, range2.start)
+        val endInclusive = minOf(range1.endInclusive, range2.endInclusive)
+
+        // Check if there is a valid intersection
+        if (start <= endInclusive) {
+            return start..endInclusive
+        } else {
+            return null // No intersection
+        }
+    }
+
+
+    fun outersectRanges(range1: LongRange, range2: LongRange): MutableList<LongRange> {
+        val intersectionStart = maxOf(range1.start, range2.start)
+        val intersectionEnd = minOf(range1.endInclusive, range2.endInclusive)
+
+        val outersects = mutableListOf<LongRange>()
+
+        // Check if there is a valid intersection
+        if (intersectionStart <= intersectionEnd) {
+            if (range1.start < intersectionStart) {
+                outersects.add(range1.start until intersectionStart)
+            }
+            if (intersectionEnd < range1.endInclusive) {
+                outersects.add((intersectionEnd + 1)..range1.endInclusive)
+            }
+
+            if (range2.start < intersectionStart) {
+                outersects.add(range2.start until intersectionStart)
+            }
+            if (intersectionEnd < range2.endInclusive) {
+                outersects.add((intersectionEnd + 1)..range2.endInclusive)
+            }
+        } else {
+            // No intersection, add both ranges as outersects
+            outersects.add(range1)
+            outersects.add(range2)
+        }
+
+        return outersects
+    }
+
+    fun outersectWithList(current: LongRange, innerRanges: List<LongRange>): List<LongRange> {
+        var outersects = mutableListOf(current)
+        innerRanges.forEach { innerRange ->
+            var newOutersects = mutableListOf<LongRange>()
+            outersects.forEach { outersect ->
+                var inner = intersectRanges(outersect, innerRange)
+                if (inner == null) {
+                    newOutersects.add(outersect)
+                } else {
+                    newOutersects.addAll(outersectRanges(outersect, innerRange))
+                }
+            }
+            outersects = newOutersects
+        }
+        return outersects
+    }
+
+
 
 
 
