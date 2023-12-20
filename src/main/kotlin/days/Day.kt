@@ -11,25 +11,24 @@ typealias Matrix<T> = List<List<T>>
 typealias MutableMatrix<T> = MutableList<MutableList<T>>
 
 
-
-abstract class Day(dayNumber: Int, year:Int=2022) {
+abstract class Day(dayNumber: Int, year: Int = 2022) {
 
 
     fun List<String>.ints(radix: Int = 10) = this.map { it.toInt(radix) }
-    fun List<Int>.product() = this.reduce { acc, i ->  acc * i }
+    fun List<Int>.product() = this.reduce { acc, i -> acc * i }
 
     fun List<Long>.closestValue(value: Long) = minBy { abs(value - it) }
 
 
     fun <E> List<E>.splitBy(predicate: (E) -> Boolean): List<List<E>> =
-        this.fold(mutableListOf(mutableListOf<E>())) { acc, element ->
-            if (predicate.invoke(element)) {
-                acc += mutableListOf<E>()
-            } else {
-                acc.last() += element
+            this.fold(mutableListOf(mutableListOf<E>())) { acc, element ->
+                if (predicate.invoke(element)) {
+                    acc += mutableListOf<E>()
+                } else {
+                    acc.last() += element
+                }
+                acc
             }
-            acc
-        }
 
     open fun <T> transpose(table: List<List<T>>): List<List<T>> {
         val ret: MutableList<List<T>> = ArrayList()
@@ -50,21 +49,22 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
     protected val inputString: String by lazy { InputReader.getInputAsString(dayNumber, year) }
 
-    fun sign(num: Int): Int = if (num >0) 1 else -1
+    fun sign(num: Int): Int = if (num > 0) 1 else -1
     fun sign(positive: Boolean) = if (positive) 1 else -1
 
     data class PointL(var y: Long, var x: Long)
 
     data class Range(val begin: Int, val end: Int)
 
-    fun extraxtAllIntsFromString(string:String): List<Int> {
+    fun extraxtAllIntsFromString(string: String): List<Int> {
         val regex = Regex("\\d+")
         val resultList = regex.findAll(string).map { it.value }.toList().ints()
         return resultList
     }
-    fun extraxtAllLongsFromString(string:String): List<Long> {
+
+    fun extraxtAllLongsFromString(string: String): List<Long> {
         val regex = Regex("\\d+")
-        val resultList = regex.findAll(string).map { it.value }.toList().map{it.toLong()}
+        val resultList = regex.findAll(string).map { it.value }.toList().map { it.toLong() }
         return resultList
     }
 
@@ -74,11 +74,19 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         UP, DOWN, RIGHT, LEFT
     }
 
+    fun directionIsOpposite(dir1: Direction?, dir2: Direction?): Boolean {
+        if (dir1 == Direction.DOWN && dir2 == Direction.UP) return true
+        if (dir2 == Direction.DOWN && dir1 == Direction.UP) return true
+        if (dir1 == Direction.RIGHT && dir2 == Direction.LEFT) return true
+        if (dir2 == Direction.RIGHT && dir1 == Direction.LEFT) return true
+        return false
+    }
+
     data class Point(var y: Int, var x: Int) {
         fun move(direction: Any) {
             when (direction) {
-                'D','v', Direction.DOWN -> this.y++
-                'U','^', Direction.UP -> this.y--
+                'D', 'v', Direction.DOWN -> this.y++
+                'U', '^', Direction.UP -> this.y--
                 'L', '<', Direction.LEFT -> this.x--
                 'R', '>', Direction.RIGHT -> this.x++
                 else -> throw IllegalArgumentException("$direction is not a valid direction")
@@ -99,17 +107,17 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     }
 
 
-
     fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) { i -> rows[i] }
-    fun matrixOfInput(inputList:List<String>): Matrix<Char> {
+    fun matrixOfInput(inputList: List<String>): Matrix<Char> {
         return matrixOf(inputList.map { it.map { it } })
     }
+
     fun <T> matrixOf(rows: List<List<T>>): Matrix<T> = List(rows.size) { i -> rows[i] }
     fun <T> Matrix<T>.toMutableMatrix(): MutableMatrix<T> = this.map { it.toMutableList() }.toMutableList()
     fun <T> Matrix<T>.getColumn(col: Int): List<T> = getCol(this, col)
     fun <T, R> Matrix<T>.mapMatrix(transform: (T) -> R): Matrix<R> = this.map { it.map(transform) }
     fun <T, R> Matrix<T>.mapMatrixIndexed(transform: (Int, Int, T) -> R): Matrix<R> =
-        this.mapIndexed { i, row -> row.mapIndexed { j, col -> transform(i, j, col) } }
+            this.mapIndexed { i, row -> row.mapIndexed { j, col -> transform(i, j, col) } }
 
     fun <T> Matrix<T>.matrixToString(): String = this.joinToString("\n") { it.joinToString(", ") }
     fun <T : Comparable<T>> Matrix<T>.matrixMax(): T = this.mapNotNull { it.maxOrNull() }.maxOrNull()!!
@@ -120,14 +128,14 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> emptyMatrixOf(rows: Int, columns: Int, default: T) = MutableList(rows) { MutableList(columns) { default } }
     fun <T> Matrix<T>.count(predicate: (T) -> Boolean) = this.sumOf { it.count(predicate) }
     fun <T> Matrix<T>.getAdjacent(row: Int, col: Int): List<T> =
-        this.getAdjacentCoordinates(row, col).map { it -> this[it.y][it.x] }
+            this.getAdjacentCoordinates(row, col).map { it -> this[it.y][it.x] }
 
     fun <T> Matrix<T>.getAdjacentCoordinates(row: Int, col: Int): List<Point> {
         val adjacent = mutableListOf<Point>()
-        if (col != 0) adjacent.add(Point( row,col - 1))
-        if (col != this.getColNum() - 1) adjacent.add(Point(row,col + 1))
-        if (row != 0) adjacent.add(Point(row - 1,col ))
-        if (row != this.getRowNum() - 1) adjacent.add(Point(row + 1,col))
+        if (col != 0) adjacent.add(Point(row, col - 1))
+        if (col != this.getColNum() - 1) adjacent.add(Point(row, col + 1))
+        if (row != 0) adjacent.add(Point(row - 1, col))
+        if (row != this.getRowNum() - 1) adjacent.add(Point(row + 1, col))
         return adjacent
     }
 
@@ -135,23 +143,23 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     fun <T> Matrix<T>.getRangesToEdge(point: Point) = getRangesToEdge(point.y, point.x)
     fun <T> Matrix<T>.getRangesToEdge(row: Int, col: Int) = getColumnToEdge(row, col) + getRowToEdge(row, col)
     fun <T> Matrix<T>.getColumnToEdge(row: Int, col: Int): List<List<T>> =
-        this.getColumn(col).let { listOf(it.subList(0, row), it.subList(row + 1, it.size)) }
+            this.getColumn(col).let { listOf(it.subList(0, row), it.subList(row + 1, it.size)) }
 
     fun <T> Matrix<T>.getRowToEdge(row: Int, col: Int): List<List<T>> =
-        this[row].let { listOf(it.subList(0, col), it.subList(col + 1, it.size)) }
+            this[row].let { listOf(it.subList(0, col), it.subList(col + 1, it.size)) }
 
 
     fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
         val adjacent = getAdjacentCoordinates(row, col).toMutableList()
         if (col != 0 && row != 0) adjacent.add(Point(row - 1, col - 1))
-        if (col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(row + 1,col - 1, ))
-        if (col != this.getColNum() - 1 && row != 0) adjacent.add(Point(row - 1,col + 1))
+        if (col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(row + 1, col - 1))
+        if (col != this.getColNum() - 1 && row != 0) adjacent.add(Point(row - 1, col + 1))
         if (col != this.getColNum() - 1 && row != this.getRowNum() - 1) adjacent.add(Point(row + 1, col + 1))
         return adjacent
     }
 
     fun <T> Matrix<T>.getSurroundingCoordinates(point: Point): List<Point> =
-        this.getSurroundingCoordinates(point.y, point.x)
+            this.getSurroundingCoordinates(point.y, point.x)
 
     fun <T> Matrix<T>.bfs(start: Point, end: Point): List<Point> {
         val queue = LinkedList<Point>()
@@ -176,7 +184,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
                 return shortestPath.reversed()
             }
 
-            val neighbors = this.getAdjacentCoordinates(current).filter{this.getInt(it)-this.getInt(current)<2}
+            val neighbors = this.getAdjacentCoordinates(current).filter { this.getInt(it) - this.getInt(current) < 2 }
 
             for (neighbor in neighbors) {
                 if (neighbor !in visited) {
@@ -189,10 +197,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
 
 
         // no path found
-        return List(5000){start}
+        return List(5000) { start }
     }
 
-    fun <T> Matrix<T>.print()   {
+    fun <T> Matrix<T>.print() {
         for (row in this) {
             for (element in row) {
                 print(element)
@@ -207,19 +215,20 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         val SIZE = matrix.size
 
 
-        for( x in 0 until SIZE){
-            val temp = matrix.map{it[x]}.reversed()
-            for( y in 0 until SIZE){
+        for (x in 0 until SIZE) {
+            val temp = matrix.map { it[x] }.reversed()
+            for (y in 0 until SIZE) {
                 matrix[y][x] = temp[y]
             }
         }
 
         return matrix
     }
+
     fun rotateMatrixCLockwise(matrix: Matrix<Char>, amount: Int): Matrix<Char> {
 
         var rotatedMatrix: MutableMatrix<Char> = matrix.toMutableMatrix();
-        repeat(amount){
+        repeat(amount) {
             val rows = rotatedMatrix.size
             val cols = rotatedMatrix[0].size
 
@@ -237,10 +246,10 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         return rotatedMatrix
     }
 
-    fun <T> Matrix<T>.print(p: Point, dir: Char)   {
-        for ((y,row) in this.withIndex()) {
-            for ((x,element) in row.withIndex()) {
-                if(y==p.y && x==p.x) print(dir)
+    fun <T> Matrix<T>.print(p: Point, dir: Char) {
+        for ((y, row) in this.withIndex()) {
+            for ((x, element) in row.withIndex()) {
+                if (y == p.y && x == p.x) print(dir)
                 else print(element)
             }
             println() // Move to the next line after printing each row
@@ -248,20 +257,20 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         println()
     }
 
-    fun <T> Matrix<T>.get(point:Point): T {
+    fun <T> Matrix<T>.get(point: Point): T {
         return this[point.y][point.x]
     }
-    fun <T> Matrix<T>.getInt(point:Point): Int {
+
+    fun <T> Matrix<T>.getInt(point: Point): Int {
         return this[point.y][point.x] as Int
     }
 
 
-
     fun Point.moveInDirection(direction: Any, step: Int = 1): Point = when (direction) {
-        'D' , Direction.DOWN -> Point(this.y + step, this.x )
-        'U', Direction.UP -> Point(this.y - step, this.x )
-        'L', Direction.LEFT -> Point(this.y , this.x- step)
-        'R', Direction.RIGHT -> Point(this.y , this.x + step)
+        'D', Direction.DOWN -> Point(this.y + step, this.x)
+        'U', Direction.UP -> Point(this.y - step, this.x)
+        'L', Direction.LEFT -> Point(this.y, this.x - step)
+        'R', Direction.RIGHT -> Point(this.y, this.x + step)
         else -> throw IllegalArgumentException("$direction is not a valid direction")
     }
 
@@ -332,7 +341,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     /*----- Helper Functions -----*/
 
     fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> =
-        List(matrix.getColNum()) { i -> matrix.getColumn(i) }
+            List(matrix.getColNum()) { i -> matrix.getColumn(i) }
 
     fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
         var newMatrix = matrix
@@ -357,7 +366,7 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
     }
 
     infix fun IntRange.overlaps(other: IntRange): Boolean =
-        first in other || last in other || other.first in this || other.last in this
+            first in other || last in other || other.first in this || other.last in this
 
     infix fun IntRange.containsRange(other: IntRange): Boolean = other.first in this && other.last in this
 
@@ -453,9 +462,6 @@ abstract class Day(dayNumber: Int, year:Int=2022) {
         }
         return outersects
     }
-
-
-
 
 
 }
