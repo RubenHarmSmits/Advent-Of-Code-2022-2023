@@ -14,9 +14,9 @@ class Day17 : Day(17, 2023) {
         it.map { it.digitToInt() }
     }
 
-    val sizey = grid.size
-    val sizex = grid[0].size
-    val endpoint = Point(sizey - 1, sizex - 1)
+    private val sizey = grid.size
+    private val sizex = grid[0].size
+    private val endpoint = Point(sizey - 1, sizex - 1)
 
     fun solve(): Int {
         var priorityQueue = mutableListOf<Node>()
@@ -47,10 +47,7 @@ class Day17 : Day(17, 2023) {
             if (node.point.y != sizey - 1) neighnodes.add(Point(node.point.y + 1, node.point.x) to Direction.DOWN)
 
             neighnodes.forEach { (point, dir) ->
-                var amountStraight = 0
-                if (node.direction == dir) {
-                    amountStraight = node.amountStraight + 1
-                }
+                val amountStraight = if (node.direction == dir) node.amountStraight + 1 else 0
                 val findNeighnode = priorityQueue.find { it.point == point && amountStraight == it.amountStraight && dir == it.direction }
                 if (findNeighnode != null && isAllowed(dir, node) && !findNeighnode.visited){
                     findNeighnode.weight = min(findNeighnode.weight, node.weight + grid.get(findNeighnode.point))
@@ -58,7 +55,7 @@ class Day17 : Day(17, 2023) {
             }
             node.visited = true
         }
-
+         // endPoint never found ):
         return -1
     }
 

@@ -139,7 +139,30 @@ abstract class Day(dayNumber: Int, year: Int = 2022) {
         return adjacent
     }
 
+    fun <T> Matrix<T>.getAdjacentCoordinates2(point: Pair<Point,Point>): List<Pair<Point,Point>> {
+        val adjacent = mutableListOf<Pair<Point,Point>>()
+
+
+        if (point.first.x != 0) adjacent.add(Point(point.first.y, point.first.x - 1) to point.second);
+        else adjacent.add(Point(point.first.y, this.getRowNum()-1) to Point(point.second.y,point.second.x-1))
+
+        if (point.first.x != this.getColNum() - 1) adjacent.add(Point(point.first.y, point.first.x + 1) to point.second)
+        else adjacent.add(Point(point.first.y, 0) to Point(point.second.y,point.second.x+1))
+
+
+        if (point.first.y != 0) adjacent.add(Point(point.first.y - 1, point.first.x) to point.second)
+        else adjacent.add(Point(this.getColNum()-1, point.first.x) to Point(point.second.y -1,point.second.x))
+
+
+        if (point.first.y != this.getRowNum() - 1) adjacent.add(Point(point.first.y + 1, point.first.x) to point.second)
+        else adjacent.add(Point(0, point.first.x) to Point(point.second.y +1,point.second.x))
+
+
+        return adjacent
+    }
+
     fun <T> Matrix<T>.getAdjacentCoordinates(point: Point): List<Point> = getAdjacentCoordinates(point.y, point.x)
+//    fun <T> Matrix<T>.getAdjacentCoordinates2(point: Point): List<Point> = getAdjacentCoordinates2(point.y, point.x)
     fun <T> Matrix<T>.getRangesToEdge(point: Point) = getRangesToEdge(point.y, point.x)
     fun <T> Matrix<T>.getRangesToEdge(row: Int, col: Int) = getColumnToEdge(row, col) + getRowToEdge(row, col)
     fun <T> Matrix<T>.getColumnToEdge(row: Int, col: Int): List<List<T>> =
