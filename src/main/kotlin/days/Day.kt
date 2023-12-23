@@ -407,7 +407,13 @@ abstract class Day(dayNumber: Int, year: Int = 2022) {
         return result
     }
 
-    // find lcm of a list of longs
+
+    // sum of x eg 10 + 9 + 8 + 7 .. + 1
+    fun summation(x: Long): Long{
+        return x * (x + 1L) / 2L
+    }
+
+    // find lcm of a list of longs eg [3,4,6] = 12
     fun leastCommonMultiple(numbers: List<Long>): Long {
         var result = numbers[0]
         for (i in 1 until numbers.size) {
